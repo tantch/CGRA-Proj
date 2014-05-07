@@ -35,7 +35,7 @@ void myClock::update(unsigned long sysTime) {
 		pntrSegundos->incAngle(360 / 60);
 
 		if ((int) (pntrSegundos->getAngle()) % 360 == 0) {
-			pntrSegundos->incAngle(360 / 60);
+			pntrMinutos->incAngle(360 / 60);
 
 			if ((int) (pntrMinutos->getAngle()) % 360 == 0)
 				pntrHoras->incAngle(360 / 12);

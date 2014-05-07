@@ -8,11 +8,14 @@
 #include "myTable.h"
 #include "Plane.h"
 #include "myClock.h"
+#include "MyRobot.h"
 class LightingScene: public CGFscene {
 public:
 	void init();
 	void display();
 	void update(unsigned long sysTime);
+	 void toggleSomething();
+	 int sceneVar;
 	CGFlight* light0;
 	CGFlight* light1;
 	CGFlight* light2;
@@ -32,7 +35,7 @@ public:
 
 	myClock* clock;
 	myLamp* lamp1;
-
+	MyRobot* robot;
 	~LightingScene();
 };
 

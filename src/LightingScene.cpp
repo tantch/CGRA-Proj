@@ -59,6 +59,7 @@ float yellow[4] = { 1, 1, 0, 1 };
 void LightingScene::init() {
 	// Enables lighting computations
 	glEnable(GL_LIGHTING);
+	sceneVar = 0;
 
 	// Sets up some lighting parameters
 	// Computes lighting only using the front face normals and materials
@@ -105,7 +106,8 @@ void LightingScene::init() {
 	boardA = new Plane(BOARD_A_DIVISIONS);
 	boardB = new Plane(BOARD_B_DIVISIONS);
 	lamp1 = new myLamp(7, 4, true);
-	clock= new myClock();
+	clock = new myClock();
+	robot = new MyRobot(3);
 
 	//Declares materials
 	materialA = new CGFappearance(ambA, difA, specA, shininessA);
@@ -123,7 +125,7 @@ void LightingScene::init() {
 	windowAppearance = new CGFappearance(ambB, difB, specB, shininessB);
 	windowAppearance->setTexture("window.png");
 	windowAppearance->setTextureWrap(GL_CLAMP, GL_CLAMP);
-	floorAppearance= new CGFappearance(ambT, difT, specT, shininessT);
+	floorAppearance = new CGFappearance(ambT, difT, specT, shininessT);
 	floorAppearance->setTexture("floor.png");
 	setUpdatePeriod(100);
 	// defines shade model
@@ -136,6 +138,9 @@ void LightingScene::update(unsigned long sysTime) {
 	clock->update(sysTime);
 }
 
+void LightingScene::toggleSomething() {
+
+}
 void LightingScene::display() {
 
 	// ---- BEGIN Background, camera and axis setup
@@ -170,11 +175,12 @@ void LightingScene::display() {
 	glPopMatrix();
 
 	//Second Table
-	glPushMatrix();
-	glTranslated(12, 0, 8);
-	table->draw();
-	glPopMatrix();
-
+	/*
+	 glPushMatrix();
+	 glTranslated(12, 0, 8);
+	 table->draw();
+	 glPopMatrix();
+	 */
 	//Floor
 	glPushMatrix();
 	glTranslated(7.5, 0, 7.5);
@@ -190,7 +196,7 @@ void LightingScene::display() {
 	glRotated(-90.0, 0, 0, 1);
 	glScaled(15, 0.2, 8);
 	windowAppearance->apply();
-	wall->draw(2, 0.5);
+	wall->draw(2, 0.85);
 	glPopMatrix();
 
 	//PlaneWall
@@ -220,7 +226,6 @@ void LightingScene::display() {
 	boardB->draw(0, 0.3);
 	glPopMatrix();
 
-
 	glPushMatrix();
 	glTranslatef(4, 7, 5);
 	materialC->apply();
@@ -230,6 +235,10 @@ void LightingScene::display() {
 	glTranslatef(6, 6, -0.5);
 	clock->draw();
 	glPopMatrix();
+
+
+	robot->draw();
+
 
 	// ---- END Primitive drawing section
 
@@ -242,6 +251,8 @@ void LightingScene::display() {
 LightingScene::~LightingScene() {
 	delete (light0);
 	delete (light1);
+	delete (light2);
+	delete (light3);
 
 	delete (materialA);
 	delete (materialB);
