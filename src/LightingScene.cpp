@@ -107,7 +107,7 @@ void LightingScene::init() {
 	boardB = new Plane(BOARD_B_DIVISIONS);
 	lamp1 = new myLamp(7, 4, true);
 	clock = new myClock();
-	robot = new MyRobot(3);
+	robot = new MyRobot(20);
 
 	//Declares materials
 	materialA = new CGFappearance(ambA, difA, specA, shininessA);
@@ -237,8 +237,10 @@ void LightingScene::display() {
 	glPopMatrix();
 
 
+	glPushMatrix();
+	materialC->apply();
 	robot->draw();
-
+	glPopMatrix();
 
 	// ---- END Primitive drawing section
 
