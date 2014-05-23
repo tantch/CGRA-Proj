@@ -9,13 +9,16 @@
 #include "Plane.h"
 #include "myClock.h"
 #include "MyRobot.h"
+#include "Impostor.h"
 class LightingScene: public CGFscene {
 public:
 	void init();
 	void display();
 	void update(unsigned long sysTime);
-	 void toggleSomething();
-	 int sceneVar;
+	void toggleLight(int i);
+	void toggleSomething();
+	void applyTexture(int i);
+	int sceneVar;
 	CGFlight* light0;
 	CGFlight* light1;
 	CGFlight* light2;
@@ -24,15 +27,19 @@ public:
 	Plane* wall;
 	Plane* boardA;
 	Plane* boardB;
+	Impostor* Imp;
 	CGFappearance* materialA;
 	CGFappearance* materialB;
 	CGFappearance* materialC;
 	CGFappearance* tableAppearance;
 	CGFappearance* slidesAppearance;
+	CGFappearance* landscapeAppearance;
 	CGFappearance* boardAppearance;
 	CGFappearance* windowAppearance;
 	CGFappearance* floorAppearance;
-
+	bool lght0on,lght1on,lght2on,lght3on;
+	bool clockRun;
+	bool wired;
 	myClock* clock;
 	myLamp* lamp1;
 	MyRobot* robot;

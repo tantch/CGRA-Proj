@@ -53,14 +53,13 @@ float difBo[3] = { 0.2, 0.2, 0.2 };
 float specBo[3] = { 0.5, 0.5, 0.5 };
 float shininessBo = 120.f;
 
-float ambientNull[4] = { 0, 0, 0, 1 };
+float ambientNull[4] = { 0.3, 0.3, 0.3, 1 };
 float yellow[4] = { 1, 1, 0, 1 };
 
 void LightingScene::init() {
 	// Enables lighting computations
 	glEnable(GL_LIGHTING);
 	sceneVar = 0;
-
 	// Sets up some lighting parameters
 	// Computes lighting only using the front face normals and materials
 	glLightModelf(GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE);
@@ -69,33 +68,35 @@ void LightingScene::init() {
 	//glLightModelfv(GL_LIGHT_MODEL_AMBIENT, globalAmbientLight);
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientNull);
 
+	clockRun=true;
+	wired=false;
 	// Declares and enables lights, with null ambient component
 	light0 = new CGFlight(GL_LIGHT0, light0_pos);
 	light0->setSpecular(yellow);
 	light0->setAmbient(ambientNull);
-	//light0->disable();
 	light0->enable();
+	lght0on = true;
 
 	light1 = new CGFlight(GL_LIGHT1, light1_pos);
 	light1->setAmbient(ambientNull);
-	//light1->disable();
 	light1->enable();
+	lght1on = true;
 
 	light2 = new CGFlight(GL_LIGHT2, light2_pos);
 	light2->setAmbient(ambientNull);
 	light2->setKc(0);
 	light2->setKl(1);
 	light2->setKq(0);
-	//light2->disable();
 	light2->enable();
+	lght2on = true;
 
 	light3 = new CGFlight(GL_LIGHT3, light3_pos);
 	light3->setAmbient(ambientNull);
 	light3->setKc(0);
 	light3->setKl(0);
 	light3->setKq(1);
-	//light3->disable();
 	light3->enable();
+	lght3on = true;
 
 	// Uncomment below to enable normalization of lighting normal vectors
 	glEnable(GL_NORMALIZE);
@@ -107,7 +108,8 @@ void LightingScene::init() {
 	boardB = new Plane(BOARD_B_DIVISIONS);
 	lamp1 = new myLamp(7, 4, true);
 	clock = new myClock();
-	robot = new MyRobot(20);
+	robot = new MyRobot(40);
+	Imp = new Impostor();
 
 	//Declares materials
 	materialA = new CGFappearance(ambA, difA, specA, shininessA);
@@ -127,7 +129,10 @@ void LightingScene::init() {
 	windowAppearance->setTextureWrap(GL_CLAMP, GL_CLAMP);
 	floorAppearance = new CGFappearance(ambT, difT, specT, shininessT);
 	floorAppearance->setTexture("floor.png");
-	setUpdatePeriod(100);
+	landscapeAppearance = new CGFappearance(ambT, difT, specT, shininessT);
+	landscapeAppearance->setTexture("Dressrosa.jpg");
+
+	setUpdatePeriod(30);
 	// defines shade model
 	glShadeModel(GL_SMOOTH);
 
@@ -135,11 +140,58 @@ void LightingScene::init() {
 
 }
 void LightingScene::update(unsigned long sysTime) {
-	clock->update(sysTime);
-}
+	if (clockRun)
+		clock->update(sysTime);
 
+		robot->update();
+
+}
+void LightingScene::applyTexture(int i){
+	robot->applyTexture(i);
+}
 void LightingScene::toggleSomething() {
 
+}
+void LightingScene::toggleLight(int i) {
+	switch (i) {
+	case 0:
+		if (lght0on) {
+			light0->disable();
+			lght0on = false;
+		} else {
+			light0->enable();
+			lght0on = true;
+		}
+		break;
+	case 1:
+		if (lght1on) {
+			light1->disable();
+			lght1on = false;
+		} else {
+			light1->enable();
+			lght1on = true;
+		}
+		break;
+	case 2:
+		if (lght2on) {
+			light2->disable();
+			lght2on = false;
+		} else {
+			light2->enable();
+			lght2on = true;
+		}
+		break;
+	case 3:
+		if (lght3on) {
+			light3->disable();
+			lght3on = false;
+		} else {
+			light3->enable();
+			lght3on = true;
+		}
+		break;
+
+	}
 }
 void LightingScene::display() {
 
@@ -175,12 +227,12 @@ void LightingScene::display() {
 	glPopMatrix();
 
 	//Second Table
-	/*
-	 glPushMatrix();
-	 glTranslated(12, 0, 8);
-	 table->draw();
-	 glPopMatrix();
-	 */
+
+	glPushMatrix();
+	glTranslated(12, 0, 8);
+	table->draw();
+	glPopMatrix();
+
 	//Floor
 	glPushMatrix();
 	glTranslated(7.5, 0, 7.5);
@@ -191,12 +243,8 @@ void LightingScene::display() {
 
 	//LeftWall
 	glPushMatrix();
-	glTranslated(0, 4, 7.5);
-	glRotated(90.0, 1, 0, 0);
-	glRotated(-90.0, 0, 0, 1);
-	glScaled(15, 0.2, 8);
 	windowAppearance->apply();
-	wall->draw(2, 0.85);
+	Imp->draw();
 	glPopMatrix();
 
 	//PlaneWall
@@ -236,12 +284,23 @@ void LightingScene::display() {
 	clock->draw();
 	glPopMatrix();
 
+	//Paisagem
 
 	glPushMatrix();
-	materialC->apply();
-	robot->draw();
+	glTranslated(-20, 4, 7.5);
+	glRotated(90.0, 1, 0, 0);
+	glRotated(-90.0, 0, 0, 1);
+	glScaled(30, 0.2, 16);
+	landscapeAppearance->apply();
+	wall->draw(0, 0);
 	glPopMatrix();
 
+	if (wired)
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glPushMatrix();
+	robot->draw();
+	glPopMatrix();
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	// ---- END Primitive drawing section
 
 	// We have been drawing in a memory area that is not visible - the back buffer, 
