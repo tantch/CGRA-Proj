@@ -226,12 +226,7 @@ void LightingScene::display() {
 	table->draw();
 	glPopMatrix();
 
-	//Second Table
 
-	glPushMatrix();
-	glTranslated(12, 0, 8);
-	table->draw();
-	glPopMatrix();
 
 	//Floor
 	glPushMatrix();

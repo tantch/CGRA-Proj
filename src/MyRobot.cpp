@@ -46,12 +46,27 @@ void MyRobot::applyTexture(int i) {
 void MyRobot::update() {
 
 	cx += vel[0];
-	cy += vel[1];
-	cz += vel[2];
-
 	vel[0] = 0;
-	vel[1] = 0;
+
+	cz += vel[2];
 	vel[2] = 0;
+
+	//gravidade
+	if (cy <= 0 && vel[1] <= 0) {
+		vel[1] = 0;
+		cy = 0;
+	} else if (cy <= 3.8 && cy>=3.4  && vel[1] <= 0 && cz>=6.5 && cz<=9.5 && cx>=2.5 && cx<= 7.5 ) {
+		vel[1] = 0;
+		cy = 3.65;
+
+	}else if(cy <= 3 && cy>=2  && vel[1] > 0 && cz>=6.5 && cz<=9.5 && cx>=2.5 && cx<= 7.5 ){
+		vel[1]=0;
+		cy=2.5;
+	}
+	else {
+		cy += vel[1];
+		vel[1] -= 0.02;
+	}
 
 }
 
@@ -76,9 +91,12 @@ void MyRobot::addNormal(vector<Ponto> pnts) {
 	glNormal3d(normal.x, normal.y, normal.z);
 
 }
-void MyRobot::setVel(float x, float y, float z) {
+void MyRobot::setVel(float x, float y, float z,bool jump) {
+	if(!jump)
 	vel[0] = x;
+	if(jump)
 	vel[1] = y;
+	if(!jump)
 	vel[2] = z;
 
 }

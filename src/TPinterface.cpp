@@ -12,10 +12,9 @@ void TPinterface::processKeyboard(unsigned char key, int x, int y) {
 	CGFinterface::processKeyboard(key, x, y);
 
 	switch (key) {
-	case 'a': {
-		// This is an example of accessing the associated scene
-		// To test, create the function toggleSomething in your scene to activate/deactivate something
-		((LightingScene *) scene)->toggleSomething();
+	case ' ': {
+		float vy = 0.4;
+		lght->robot->setVel(0, vy, 0, true);
 		break;
 	}
 	case 'l': {
@@ -38,21 +37,17 @@ void TPinterface::processKeyboard(unsigned char key, int x, int y) {
 
 		float vz = 0.37 * cos((M_PI / 180) * (lght->robot->getRTy() + 90));
 		float vx = 0.37 * sin((M_PI / 180) * (lght->robot->getRTy() + 90));
-		lght->robot->setVel(vx, 0, vz);
+		lght->robot->setVel(vx, 0, vz, false);
 		break;
 	}
 	case 'k': {
 
 		float vz = -0.2 * cos((M_PI / 180) * (lght->robot->getRTy() + 90));
 		float vx = -0.2 * sin((M_PI / 180) * (lght->robot->getRTy() + 90));
-		lght->robot->setVel(vx, 0, vz);
+		lght->robot->setVel(vx, 0, vz, false);
 		break;
 	}
-	case ' ':{
-		float vy=0.25;
-		lght->robot->setVel(0, vy, 0);
-		break;
-	}
+
 	}
 }
 

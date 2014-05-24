@@ -24,7 +24,7 @@ public:
 	MyRobot(int st);
 	void draw();
 	virtual ~MyRobot();
-	void setVel(float x, float y, float z);
+	void setVel(float x, float y, float z,bool jump);
 	void setRotation(int rt);
 	void calculateDrawPoints();
 	void calculateTexturePoints();
