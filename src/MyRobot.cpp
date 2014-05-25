@@ -45,14 +45,15 @@ void MyRobot::applyTexture(int i) {
 }
 void MyRobot::update() {
 
-	if (cx <= 0.5 && cx>=0.2 && vel[0] <= 0 && (cz>=9 || cz<=6 || cy>=5 || cy<=2)){
+	if (cx <= 0.5 && cx >= 0.2 && vel[0] <= 0
+			&& (cz >= 9 || cz <= 6 || cy >= 5 || cy <= 2)) {
 		cx = 0.5;
 		vel[0] = 0;
 	} else {
 		cx += vel[0];
 		vel[0] = 0;
 	}
-	if (cz <= 0.5 && vel[2] <= 0 && cx>=0) {
+	if (cz <= 0.5 && vel[2] <= 0 && cx >= 0) {
 		cz = 0.5;
 		vel[2] = 0;
 	} else {
@@ -248,7 +249,6 @@ void MyRobot::draw() {
 			for (int j = 0; j < fc[i].size(); j++) {
 				glTexCoord2d(tc[k][j + i * (tc[k].size() / 3)].x,
 						tc[k][j + i * (tc[k].size() / 3)].y);
-				//glNormal3d(fc[i][j].x, 0, fc[i][j].z);
 				vector<Ponto> temp;
 
 				if (j % 2 == 0) {
