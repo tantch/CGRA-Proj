@@ -29,6 +29,10 @@ MyRobot::MyRobot(int st) {
 	appearance2 = new CGFappearance(amb, dif, spec, shininess);
 	appearance2->setTexture("robot1.png");
 	appearance2->setTextureWrap(GL_CLAMP, GL_CLAMP);
+
+	appearance3 = new CGFappearance(amb, dif, spec, shininess);
+	appearance3->setTexture("lsp.png");
+	appearance3->setTextureWrap(GL_CLAMP, GL_CLAMP);
 	cx = 7;
 	cy = 4;
 	cz = 7;
@@ -236,8 +240,10 @@ void MyRobot::draw() {
 	glPushMatrix();
 	if (text == 0)
 		appearance1->apply();
-	if (text == 1)
+	else if (text == 1)
 		appearance2->apply();
+	else if (text == 2)
+		appearance3->apply();
 	glTranslated(cx, cy, cz);
 	glRotated(rty, 0, 1, 0);
 	for (int k = 0; k < 4; k++) {

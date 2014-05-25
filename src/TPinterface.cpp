@@ -63,19 +63,20 @@ void TPinterface::initGUI() {
 	addCheckboxToPanel(painel, "luz 3", &light4, 4);
 	addColumn();
 	GLUI_Panel *RobotPanel = addPanel("Robot", 2);
-	 GLUI_Listbox *textures = addListboxToPanel(RobotPanel, "Texture", &texture,
-	 5);
-	 textures->add_item(0, "normal");
-	 textures->add_item(1, "Metal");
+	GLUI_Listbox *textures = addListboxToPanel(RobotPanel, "Texture", &texture,
+			5);
+	textures->add_item(0, "normal");
+	textures->add_item(1, "Metal");
+	textures->add_item(2, "LSP");
 
-	 GLUI_RadioGroup *texMode = addRadioGroupToPanel(RobotPanel, &robot, 6);
+	GLUI_RadioGroup *texMode = addRadioGroupToPanel(RobotPanel, &robot, 6);
 
-	 addRadioButtonToGroup(texMode, "Wireframe");
-	 addRadioButtonToGroup(texMode, "Textured");
+	addRadioButtonToGroup(texMode, "Wireframe");
+	addRadioButtonToGroup(texMode, "Textured");
 
-	 addColumn();
-	 addSeparator();
-	 addButton("Stop/Restart clock", 7);
+	addColumn();
+	addSeparator();
+	addButton("Stop/Restart clock", 7);
 
 }
 
@@ -95,27 +96,23 @@ void TPinterface::processGUI(GLUI_Control *ctrl) {
 	case 4:
 		lght->toggleLight(3);
 		break;
-		case 5:
-		 if (texture == 0) {
-		 lght->applyTexture(0);
-		 } else if (texture == 1) {
-		 lght->applyTexture(1);
-		 }
+	case 5:
+		lght->applyTexture(texture);
 
-		 break;
+		break;
 
-		 case 6:
-		 if (lght->wired)
-		 lght->wired = false;
-		 else
-		 lght->wired = true;
-		 break;
-		 case 7:
-		 if (lght->clockRun)
-		 lght->clockRun = false;
-		 else
-		 lght->clockRun = true;
-		 break;
+	case 6:
+		if (lght->wired)
+			lght->wired = false;
+		else
+			lght->wired = true;
+		break;
+	case 7:
+		if (lght->clockRun)
+			lght->clockRun = false;
+		else
+			lght->clockRun = true;
+		break;
 
 	};
 }

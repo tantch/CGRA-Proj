@@ -16,7 +16,7 @@ class MyRobot: public CGFobject {
 	int rty,text;
 	int stacks, slices;
 	vector <vector <Ponto> > fc,tc;
-	CGFappearance* appearance1,*appearance2;
+	CGFappearance* appearance1,*appearance2,*appearance3;
 	float vel[3];
 	bool jumped=false;
 public:
