@@ -18,8 +18,11 @@ class MyRobot: public CGFobject {
 	vector <vector <Ponto> > fc,tc;
 	CGFappearance* appearance1,*appearance2;
 	float vel[3];
-
+	bool jumped=false;
 public:
+	bool isJumping(){
+		return jumped;
+	}
 	void setCoord();
 	MyRobot(int st);
 	void draw();

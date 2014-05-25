@@ -13,8 +13,12 @@ void TPinterface::processKeyboard(unsigned char key, int x, int y) {
 
 	switch (key) {
 	case ' ': {
-		float vy = 0.4;
+		float vy = 0.54;
+		if(!lght->robot->isJumping())
 		lght->robot->setVel(0, vy, 0, true);
+
+
+
 		break;
 	}
 	case 'l': {
@@ -65,11 +69,14 @@ void TPinterface::initGUI() {
 			5);
 	textures->add_item(0, "normal");
 	textures->add_item(1, "Metal");
+	GLUI_RadioGroup *texMode = addRadioGroupToPanel(RobotPanel, &robot, 6);
 
-	addCheckboxToPanel(RobotPanel, "Wireframe",
-	NULL, 6);
+	addRadioButtonToGroup(texMode, "Wireframe");
+	addRadioButtonToGroup(texMode, "Textured");
 
-	addCheckboxToPanel(RobotPanel, "Clock Running", &robot, 7);
+	addColumn();
+	addSeparator();
+	addButton("Stop/Restart clock", 7);
 
 }
 

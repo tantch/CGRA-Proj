@@ -45,25 +45,38 @@ void MyRobot::applyTexture(int i) {
 }
 void MyRobot::update() {
 
-	cx += vel[0];
-	vel[0] = 0;
-
-	cz += vel[2];
-	vel[2] = 0;
+	if (cx <= 0.5 && cx>=0.2 && vel[0] <= 0 && (cz>=9 || cz<=6 || cy>=5 || cy<=2)){
+		cx = 0.5;
+		vel[0] = 0;
+	} else {
+		cx += vel[0];
+		vel[0] = 0;
+	}
+	if (cz <= 0.5 && vel[2] <= 0 && cx>=0) {
+		cz = 0.5;
+		vel[2] = 0;
+	} else {
+		cz += vel[2];
+		vel[2] = 0;
+	}
 
 	//gravidade
 	if (cy <= 0 && vel[1] <= 0) {
+		jumped = false;
 		vel[1] = 0;
 		cy = 0;
-	} else if (cy <= 3.8 && cy>=3.4  && vel[1] <= 0 && cz>=6.5 && cz<=9.5 && cx>=2.5 && cx<= 7.5 ) {
+	} else if (cy <= 3.8 && cy >= 3.4 && vel[1] <= 0 && cz >= 6.5 && cz <= 9.5
+			&& cx >= 2.5 && cx <= 7.5) {
+		jumped = false;
 		vel[1] = 0;
 		cy = 3.65;
 
-	}else if(cy <= 3 && cy>=2  && vel[1] > 0 && cz>=6.5 && cz<=9.5 && cx>=2.5 && cx<= 7.5 ){
-		vel[1]=0;
-		cy=2.5;
-	}
-	else {
+	} else if (cy <= 3 && cy >= 2 && vel[1] > 0 && cz >= 6.5 && cz <= 9.5
+			&& cx >= 2.5 && cx <= 7.5) {
+		vel[1] = 0;
+		cy = 2.5;
+	} else {
+		jumped = true;
 		cy += vel[1];
 		vel[1] -= 0.02;
 	}
@@ -88,16 +101,17 @@ void MyRobot::addNormal(vector<Ponto> pnts) {
 	normal.x = normal.x / tamanho;
 	normal.y = normal.y / tamanho;
 	normal.z = normal.z / tamanho;
+
 	glNormal3d(normal.x, normal.y, normal.z);
 
 }
-void MyRobot::setVel(float x, float y, float z,bool jump) {
-	if(!jump)
-	vel[0] = x;
-	if(jump)
-	vel[1] = y;
-	if(!jump)
-	vel[2] = z;
+void MyRobot::setVel(float x, float y, float z, bool jump) {
+	if (!jump)
+		vel[0] = x;
+	if (jump)
+		vel[1] = y;
+	if (!jump)
+		vel[2] = z;
 
 }
 void MyRobot::setRotation(int rt) {
@@ -156,7 +170,7 @@ void MyRobot::calculateDrawPoints() {
 
 }
 void MyRobot::calculateTexturePoints() {
-	double tstep = 0.45 / stacks;
+	double tstep = 0.40 / stacks;
 	for (int j = 0; j < 4; j++) {
 
 		for (int i = 0; i < 3; i++) {
@@ -234,7 +248,19 @@ void MyRobot::draw() {
 			for (int j = 0; j < fc[i].size(); j++) {
 				glTexCoord2d(tc[k][j + i * (tc[k].size() / 3)].x,
 						tc[k][j + i * (tc[k].size() / 3)].y);
-				glNormal3d(fc[i][j].x, 0, fc[i][j].z);
+				//glNormal3d(fc[i][j].x, 0, fc[i][j].z);
+				vector<Ponto> temp;
+
+				if (j % 2 == 0) {
+					temp.push_back(fc[i][j]);
+					if (j < fc[i].size() - 2) {
+						temp.push_back(fc[i][j + 1]);
+						temp.push_back(fc[i][j + 3]);
+					}
+					temp.push_back(fc[i][j + 2]);
+					addNormal(temp);
+				}
+
 				glVertex3d(fc[i][j].x, fc[i][j].y, fc[i][j].z);
 
 			}

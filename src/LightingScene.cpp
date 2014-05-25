@@ -53,7 +53,7 @@ float difBo[3] = { 0.2, 0.2, 0.2 };
 float specBo[3] = { 0.5, 0.5, 0.5 };
 float shininessBo = 120.f;
 
-float ambientNull[4] = { 0.3, 0.3, 0.3, 1 };
+float ambientNull[4] = { 0.1, 0.1, 0.1, 1 };
 float yellow[4] = { 1, 1, 0, 1 };
 
 void LightingScene::init() {
@@ -269,8 +269,9 @@ void LightingScene::display() {
 	boardB->draw(0, 0.3);
 	glPopMatrix();
 
+	//lamp
 	glPushMatrix();
-	glTranslatef(4, 7, 5);
+	glTranslatef(4, 6.2, 5);
 	materialC->apply();
 	lamp1->draw();
 	glPopMatrix();
@@ -285,7 +286,7 @@ void LightingScene::display() {
 	glTranslated(-20, 4, 7.5);
 	glRotated(90.0, 1, 0, 0);
 	glRotated(-90.0, 0, 0, 1);
-	glScaled(30, 0.2, 16);
+	glScaled(60, 0.2, 32);
 	landscapeAppearance->apply();
 	wall->draw(0, 0);
 	glPopMatrix();
